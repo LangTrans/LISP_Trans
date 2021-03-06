@@ -1,11 +1,20 @@
+comment:
+  regex: "#(.+?)$"
+  tokens: [comment]
+multiline:
+  regex: ~(.+?)$
+  tokens: [statement]
 function_header:
-  regex: "func <func>\\((.*)\\):<i1>4<i2>$"
+  regex: func <func>\((.*)\):<i1>4<i2>$
   tokens: [func_name,args,statements]
+  args:
+    call: [arg]
 function:
   regex: "<func>\\((.*)\\)"
   tokens: [func_name,argument]
   argument:
     replace: [["^(.+?)$"," \\1"]]
+    call: [arg]
 const_var:
   regex: const <var>\s*=\s*(?!\s)(.+)$
   tokens: [var_name,value]
@@ -115,16 +124,20 @@ lambda:
   regex: "lambda (.+):(.+)(?:$|\\))"
   tokens: [args,statement]
 arg:
-  regex: "\\((?:\n*.+,\n*)+(?:.|\n)+\\)"
+  regex: "(?:\n*.+,\n*)+(?:.|\n)+"
   tokens: [args]
+  global: False
   args:
     replace: [[","," "]]
 mod:
   regex: <var>%<var>
   tokens: [val1,val2]
+list_element:
+  regex: "<var>\\[(\\d*)\\]"
+  tokens: [var,pos]
 settings:
   loop: True
-  looplimit: 5
+  looplimit: 7
   variables:
     opn: \(<op> .+ .+\)
     var: ([A-Za-z0-9_]+)
