@@ -9,7 +9,7 @@ target.yaml - Pattern Representation(Orginal Language)<br>
 ## Usages
 For latest source code in github
 ```console
-py langtrans.py -f <source file> <target file> lisp.ltz
+py langtrans.py -f <source file> <target file> lisp
 ```
 For older
 <br>
