@@ -23,11 +23,6 @@ printhis("Customized!")
 ```
 
 ## Usages
-For latest source code in github
-```console
-py langtrans.py -f <source file> <target file> lisp
-```
-For older
 <br>
 ```console
 py langtrans.py <source file> <target file> source target
