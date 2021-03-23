@@ -23,7 +23,7 @@ printhis("Customized!")
 ```
 
 ## Usages
-<br>
+
 ```console
 py langtrans.py <source file> <target file> source target
 ```
