@@ -1,20 +1,11 @@
-comment:
-  regex: "#(.+?)$"
-  tokens: [comment]
-multiline:
-  regex: ~(.+?)$
-  tokens: [statement]
 function_header:
   regex: func <func>\((.*)\):<i1>4<i2>$
-  tokens: [func_name,args,statements]
-  args:
-    call: [arg]
+  tokens: [func_name,args,statements,tab]
 function:
   regex: "<func>\\((.*)\\)"
   tokens: [func_name,argument]
   argument:
     replace: [["^(.+?)$"," \\1"]]
-    call: [arg]
 const_var:
   regex: const <var>\s*=\s*(?!\s)(.+)$
   tokens: [var_name,value]
@@ -67,32 +58,32 @@ not:
   tokens: [value1]
 cond_else:
   regex: cond (.+):<i1>3<i2>\nelse:<i1>5<i2>
-  tokens: [bool,statements,tab,estatements]
+  tokens: [bool,statements,tab,estatements,etab]
 cond:
   regex: cond (.+):<i1>3<i2>
-  tokens: [bool,statements]
+  tokens: [bool,statements,etab]
 if_else:
   regex: if (.+):<i1>3<i2>\n\t*else:<i1>5<i2>
-  tokens: [bool,statements,tab,estatements]
+  tokens: [bool,statements,tab,estatements,etab]
 if:
   regex: if (.+):<i1>3<i2>
-  tokens: [bool,statements]
+  tokens: [bool,statements,etab]
 when:
   regex: when (.+):<i1>3<i2>
-  tokens: [bool,statements]
+  tokens: [bool,statements,etab]
 case:
   regex: chance (.+):<i1>3<i2>$
-  tokens: [value,statements]
+  tokens: [value,statements,etab]
   statements:
     replace: [["\n\t"],["\t\n"]]
 switch:
   regex: switch (.+):<i1>3<i2>$
-  tokens: [exp,statements]
+  tokens: [exp,statements,etab]
   statements:
     replace: [["\t"],["\n\n","\n"]]
 for_loop:
   regex: for <var> in (.+):<i1>4<i2>$
-  tokens: [var_name,list,statements]
+  tokens: [var_name,list,statements,etab]
   statements:
     replace: [["^\n\t"]]
 for_range:
@@ -103,19 +94,19 @@ for_range:
     #replace: [["^\n\t"]]
 do:
   regex: upto (.+) rtn (.+):(.*)<i1>5<i2>$
-  tokens: [bool,return,exp,statements]
+  tokens: [bool,return,exp,statements,etab]
   statements:
     replace: [["^\n\t"],["\n$"]]
 dotimes:
   regex: "(\\d+) times for <var>:<i1>4<i2>$"
-  tokens: [value,var_name,statements]
+  tokens: [value,var_name,statements,etab]
   statements:
     replace: [["\n\t$","\n"]]
 do_list:
   regex: do <var> in (.+):<i1>4<i2>$
-  tokens: [var_name,list,statements]
+  tokens: [var_name,list,statements,etab]
 restval:
-  regex: "\\*(<var>)\\)"
+  regex: "\\*<var>\\)"
   tokens: [val]
 opval:
   regex: "&op (.+)\\)"
@@ -124,23 +115,19 @@ lambda:
   regex: "lambda (.+):(.+)(?:$|\\))"
   tokens: [args,statement]
 arg:
-  regex: "(?:\n*.+,\n*)+(?:.|\n)+"
+  regex: "\\((?:\n*.+,\n*)+(?:.|\n)+\\)"
   tokens: [args]
-  global: False
   args:
     replace: [[","," "]]
 mod:
   regex: <var>%<var>
   tokens: [val1,val2]
-list_element:
-  regex: "<var>\\[(\\d*)\\]"
-  tokens: [var,pos]
 settings:
   loop: True
-  looplimit: 7
+  looplimit: 5
   variables:
     opn: \(<op> .+ .+\)
-    var: ([A-Za-z0-9_]+)
+    var: (\w+)
     varof: ([A-Za-z0-9_%+\-]+)
     i1: "(\n(\t+?).*(?:(?:\n\\"
     i2: .*)*\n*)*)

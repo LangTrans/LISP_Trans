@@ -28,7 +28,9 @@ do: |
         <exp>)
 dotimes: (dotimes (<var_name> <value>)<statements>)
 do_list: (dolist (<var_name> '<list>)<statements>)
+
 function_header: (defun <func_name> (<args>)<statements>)
+
 return: (return-from <rval>)
 restval: "&rest <val>\\)"
 opval: "&optional <val>\\)"
